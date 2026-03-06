@@ -419,3 +419,6 @@ FodyWeavers.xsd
 
 # Rider
 .idea/
+
+# Ignore webbroot lib
+wwwroot/lib/
