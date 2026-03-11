@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 public class DateTimeConverter : JsonConverter<DateTime>
 {
-    private readonly string format = "yyyy-MM-dd HH:mm"; // Här anger du formatet du vill ha
+    private readonly string format = "yyyy-MM-dd"; // Här anger du formatet du vill ha
 
     public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

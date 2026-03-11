@@ -1,3 +1,4 @@
+using loanService.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace loanService.Controllers;
@@ -7,14 +8,25 @@ namespace loanService.Controllers;
 public class LoanController : ControllerBase
 {
     
+    private readonly LoanServiceDbContext _dbContext;
 
-    [HttpGet(Name = "GetLoan")]
-    public IEnumerable<Loan> Get()
+    public LoanController(LoanServiceDbContext dbContext)
     {
-        return new List<Loan>
-        {
-            new Loan { ID = 1, ItemID = 5, UserID = 0, LoanDate = DateTime.Now.AddDays(-14), DueDate = DateTime.Now.AddDays(-7), ReturnDate = DateTime.Now, Status = "Sen inlämning" },
-            new Loan { ID = 2, ItemID = 7, UserID = 0, LoanDate = DateTime.Now, DueDate = DateTime.Now.AddDays(7), ReturnDate = null, Status = "Lånad" }           
-        };
+        _dbContext = dbContext;
+    }
+
+    [HttpGet]
+    public Loan[] GetLoans()
+    {
+        Loan[] loans = _dbContext.Loans.ToArray();
+        return loans;
+    }
+
+
+    [HttpPost]
+    public void PostLoan(Loan loan)
+    {
+        _dbContext.Loans.Add(loan);
+        _dbContext.SaveChanges();
     }
 }
