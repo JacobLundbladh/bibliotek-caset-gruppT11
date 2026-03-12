@@ -1,35 +1,16 @@
-﻿@model Loan[]
+﻿
 
 @{
     ViewData["Title"] = "Lån Sida";
 }
-<h2>@ViewData["Title"]</h2>
+<div style="display: flex; justify-content: center">
+    <h2>@ViewData["Title"]</h2>
+</div>
 
-@if (Model == null || !Model.Any())
-{
-    <p>Inga lån tillgängliga</p>
-}
-else
-{
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Användare</th>
-            <th>Sak</th>
-            <th>Datum</th>
-            <th>Status</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var loans in Model)
-        {
-            <tr>    <!-- ? för att göra till null om är null, sista ? gör, om sant gör : om falskt gör-->
-                <td>@(loans?.UserID != null ? loans.UserID.ToString() : "")</td>
-                <td>@(loans.LoanDate.ToString("yy-MM-dd"))</td>
-                <td>@(loans.DueDate.ToString("yy-MM-dd"))</td>
-                <td>@(loans?.ReturnDate != null ? loans.ReturnDate.Value.ToString("yy-MM-dd") : "")</td>
-            </tr>
-        }
-        </tbody>
-    </table>
-}
+
+<div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 50px;">
+    <a asp-controller="Loan" asp-action="Show" class="btn btn-primary">Visa lån</a>
+    <a asp-controller="Loan" asp-action="Create" class="btn btn-primary">Lägg till lån</a>
+    <a asp-controller="Loan" asp-action="Edit" class="btn btn-primary">Uppdatera lån</a>
+    <a asp-controller="Loan" asp-action="Delete" class="btn btn-danger">Ta bort lån</a>
+</div>
