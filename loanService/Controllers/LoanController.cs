@@ -22,7 +22,7 @@ public class LoanController : ControllerBase
         return loans;
     }
 
-
+    // Kanske lägga till så det skickas tillbaka svar
     [HttpPost]
     public void PostLoan(Loan loan)
     {

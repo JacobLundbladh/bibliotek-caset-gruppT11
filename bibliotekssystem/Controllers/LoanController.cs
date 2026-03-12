@@ -15,7 +15,7 @@ public class LoanController : Controller
     
     public async Task<IActionResult> Index()
     {
-        Loan[] loans = await _loanService.GetLoan();
+        Loan[] loans = await _loanService.GetLoans();
         return View(loans);
     }
 }
