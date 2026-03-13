@@ -13,7 +13,7 @@ public class ItemsController : ControllerBase
     public ActionResult<IEnumerable<Item>> GetItems()
     {
         return items;
-    }
+    } 
 
     [HttpGet("{id}")]
     public ActionResult<Item> GetItem(int id)
