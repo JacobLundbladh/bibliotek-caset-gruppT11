@@ -1,0 +1,19 @@
+﻿@model Loan
+
+@{
+    ViewData["Title"] = "Skapa lån";
+}
+<div style="display: flex; justify-content: center">
+    <h2>@ViewData["Title"]</h2>
+</div>
+
+
+<form method="post" asp-action="Create">  <!-- Anropar POST metoden av Create i LoanController-->
+    <select name="selectedItem" asp-for="ItemId">
+        <option value="1">Bok</option>
+        <option value="2">Rapport</option>
+        <option value="3">Teknisk utrustning</option>
+    </select>
+
+    <button type="submit">Skapa</button>
+    </form>

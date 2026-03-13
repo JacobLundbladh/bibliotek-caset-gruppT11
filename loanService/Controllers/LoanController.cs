@@ -24,9 +24,11 @@ public class LoanController : ControllerBase
 
     // Kanske lägga till så det skickas tillbaka svar
     [HttpPost]
-    public void PostLoan(Loan loan)
+    public IActionResult PostLoan(Loan loan)
     {
         _dbContext.Loans.Add(loan);
         _dbContext.SaveChanges();
+        return Ok(loan);
     }
+    
 }

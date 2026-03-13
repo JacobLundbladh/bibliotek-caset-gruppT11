@@ -1,4 +1,5 @@
 ﻿using bibliotekssystem.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace bibliotekssystem.Services;
 
@@ -12,6 +13,7 @@ public class LoanService
     }
     
     // Hämta alla lån
+    [HttpGet]
     public async Task<Loan[]> GetLoans()
     {
         try // Fel hantering
@@ -28,6 +30,7 @@ public class LoanService
     }
     
     // Hämta beroende på id
+    [HttpGet]
     public async Task<Loan[]> GetLoan(int id)
     {
         try // Fel hantering
@@ -44,18 +47,27 @@ public class LoanService
     }
     
     // Skapa lån
-    public async Task<Loan[]> CreateLoan(Loan loan)
+    [HttpPost]
+    public async Task<bool> CreateLoan(Loan loan)
     {
+        // Hårdkoda fält som vi inte fyller i formuläret
+        loan.UserId = 42; // exempel på test-användare
+        loan.LoanDate = DateTime.Now;
+        loan.DueDate = DateTime.Now.AddDays(14); // 2 veckors lån
+        loan.ReturnDate = null;
+        loan.Status = "Active";
+
         try // Fel hantering
         {
+            
 
-            var result = await _httpClient.GetFromJsonAsync<Loan[]>("loan/{id}");
-            return result ??  Array.Empty<Loan>(); // Ifall null skicka till backa tom array
+            var response = await _httpClient.PostAsJsonAsync("loan", loan);
+            return response.IsSuccessStatusCode;
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error: {ex.Message}");
-            return Array.Empty<Loan>();
+            return false;
         }
     }
 
