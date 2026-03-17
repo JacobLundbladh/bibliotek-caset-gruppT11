@@ -1,5 +1,6 @@
 using loanService.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace loanService.Controllers;
 
@@ -16,18 +17,16 @@ public class LoanController : ControllerBase
     }
 
     [HttpGet]
-    public Loan[] GetLoans()
+    public async Task<Loan[]> GetLoans()
     {
-        Loan[] loans = _dbContext.Loans.ToArray();
-        return loans;
+        return await _dbContext.Loans.ToArrayAsync();
     }
 
-    // Kanske lägga till så det skickas tillbaka svar
     [HttpPost]
-    public IActionResult PostLoan(Loan loan)
+    public async Task<IActionResult> PostLoan(Loan loan)
     {
-        _dbContext.Loans.Add(loan);
-        _dbContext.SaveChanges();
+        await _dbContext.Loans.AddAsync(loan);
+        await _dbContext.SaveChangesAsync();
         return Ok(loan);
     }
     

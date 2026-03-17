@@ -13,7 +13,7 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+//builder.Services.AddOpenApi(); -Negraderade till net 8 så detta funkar inte längre
 
 // Konfigurera databas 
 builder.Services.AddDbContext<LoanServiceDbContext>(options =>
@@ -36,7 +36,7 @@ using (var scope = app.Services.CreateScope())
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+//    app.MapOpenApi();  -Negraderade till net 8 så detta funkar inte längre
     app.MapScalarApiReference();
 }
 
