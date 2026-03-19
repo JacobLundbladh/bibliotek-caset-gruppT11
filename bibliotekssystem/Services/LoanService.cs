@@ -13,7 +13,7 @@ public class LoanService
     }
     
     // Hämta alla lån
-    [HttpGet]
+  
     public async Task<Loan[]> GetLoans()
     {
         try // Fel hantering
@@ -30,13 +30,13 @@ public class LoanService
     }
     
     // Hämta beroende på id
-    [HttpGet]
+    
     public async Task<Loan[]> GetLoan(int id)
     {
         try // Fel hantering
         {
 
-            var result = await _httpClient.GetFromJsonAsync<Loan[]>("loan/{id}");
+            var result = await _httpClient.GetFromJsonAsync<Loan[]>($"loan/{id}");
             return result ??  Array.Empty<Loan>(); // Ifall null skicka till backa tom array
         }
         catch (Exception ex)
@@ -47,11 +47,11 @@ public class LoanService
     }
     
     // Skapa lån
-    [HttpPost]
+ 
     public async Task<bool> CreateLoan(Loan loan)
     {
         // Hårdkoda fält som vi inte fyller i formuläret
-        loan.UserId = 42; // exempel på test-användare
+        //loan.UserId = 42; // exempel på test-användare
         loan.LoanDate = DateTime.Now;
         loan.DueDate = DateTime.Now.AddDays(14); // 2 veckors lån
         loan.ReturnDate = null;
