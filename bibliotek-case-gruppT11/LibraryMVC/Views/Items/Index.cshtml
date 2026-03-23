@@ -1,0 +1,31 @@
+﻿@model List<LibraryMVC.Models.Item>
+
+<h1>Objekt</h1>
+
+<p>
+    <a asp-action="Create">Lägg till objekt</a>
+</p>
+
+<table>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Titel</th>
+        <th>Kategori</th>
+        <th>Beskrivning</th>
+        <th>Tillgänglig</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.Title</td>
+            <td>@item.Category</td>
+            <td>@item.Description</td>
+            <td>@item.IsAvailable</td>
+        </tr>
+    }
+    </tbody>
+</table>
