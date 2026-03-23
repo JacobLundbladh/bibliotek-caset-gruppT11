@@ -19,7 +19,7 @@ public class LoanService
         try // Fel hantering
         {
 
-            var result = await _httpClient.GetFromJsonAsync<Loan[]>("loan");
+            var result = await _httpClient.GetFromJsonAsync<Loan[]>("Loan"); // Stor/liten
             return result ??  Array.Empty<Loan>(); // Ifall null skicka till backa tom array
         }
         catch (Exception ex)
