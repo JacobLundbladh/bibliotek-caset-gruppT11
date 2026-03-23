@@ -1,0 +1,32 @@
+@model LibraryMVC.Models.Account
+
+@{
+    ViewData["Title"] = "Inloggning";
+}
+
+<h1>Bibliotekssystem</h1>
+<p>Inloggad som: Namn</p>
+
+<h2>Inloggning</h2>
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <p>@ViewBag.ErrorMessage</p>
+}
+
+<form method="post" asp-route-returnurl="@ViewBag.ReturnUrl">
+    <div>
+        <label>Användarnamn</label>
+        <input asp-for="Username" />
+    </div>
+
+    <div>
+        <label>Lösenord</label>
+        <input asp-for="Password" type="password" />
+    </div>
+
+    <br />
+
+    <button type="submit">Logga in</button>
+    <a asp-action="Register">Skapa konto</a>
+</form>

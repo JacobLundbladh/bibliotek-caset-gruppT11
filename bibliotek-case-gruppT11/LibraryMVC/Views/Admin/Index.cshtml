@@ -1,0 +1,26 @@
+@{
+    ViewData["Title"] = "Admin";
+}
+
+<h1>Bibliotekssystem</h1>
+<p>Inloggad som: @User.Identity?.Name</p>
+
+<p>
+    <a asp-controller="Items" asp-action="Create">Lägg till objekt</a>
+</p>
+
+<p>
+    <a asp-controller="Items" asp-action="Index">Uppdatera objekt</a>
+</p>
+
+<p>
+    <a href="#">Se historik</a>
+</p>
+
+<p>
+    <a href="#">Ändra konto uppgifter</a>
+</p>
+
+<p>
+    <a asp-controller="Account" asp-action="SignOutUser">Logga ut</a>
+</p>

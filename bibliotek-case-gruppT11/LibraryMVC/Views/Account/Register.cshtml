@@ -1,0 +1,27 @@
+@model LibraryMVC.Models.AppUser
+
+@{
+    ViewData["Title"] = "Skapa konto";
+}
+
+<h1>Skapa konto</h1>
+
+<form method="post">
+    <div>
+        <label>Användarnamn</label>
+        <input asp-for="Username" />
+    </div>
+
+    <div>
+        <label>Lösenord</label>
+        <input asp-for="Password" type="password" />
+    </div>
+
+    <br />
+
+    <button type="submit">Skapa konto</button>
+</form>
+
+<p>
+    <a asp-action="Index">Tillbaka till login</a>
+</p>
