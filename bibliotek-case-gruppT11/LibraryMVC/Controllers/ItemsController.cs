@@ -10,7 +10,7 @@ public class ItemsController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var items = await _http.GetFromJsonAsync<List<Item>>("https://localhost:XXXX/api/items");
+        var items = await _http.GetFromJsonAsync<List<Item>>("http://localhost:5265/api/Items");
         return View(items ?? new List<Item>());
     }
 
@@ -23,7 +23,7 @@ public class ItemsController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(Item item)
     {
-        await _http.PostAsJsonAsync("https://localhost:XXXX/api/items", item);
+        await _http.PostAsJsonAsync("http://localhost:5265/api/Items", item);
         return RedirectToAction("Index");
     }
 }
