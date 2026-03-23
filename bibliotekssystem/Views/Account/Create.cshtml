@@ -1,0 +1,28 @@
+﻿@model Account
+
+
+<h1>Skapa konto</h1>
+<form asp-action="CreateAccount" method="post">
+    <table>
+        <tr>
+            <td>Username</td>
+            <td><input asp-for="Username"/></td>
+        </tr>
+        <tr>
+            <td>Password</td>
+            <td><input type="password" asp-for="Password"></td>
+        </tr>
+        <tr>
+            <td>Roll</td>
+            <td>
+                <select asp-for="Role">
+                    <option value="EndUser">Slutanvändare</option>
+                    <option value="Admin">Administratör</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Create Account"/></td>
+        </tr>
+    </table>
+</form>
