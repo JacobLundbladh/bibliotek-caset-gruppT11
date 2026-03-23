@@ -1,0 +1,16 @@
+﻿@model TModel
+
+@{
+    ViewData["Title"] = "Påminnelse Sida";
+}
+<div style="display: flex; justify-content: center">
+    <h2>@ViewData["Title"]</h2>
+</div>
+
+
+<div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 50px;">
+    <a asp-controller="Loan" asp-action="" class="btn btn-primary">Visa påminnelser</a>
+    <a asp-controller="Loan" asp-action="" class="btn btn-primary">Se sen inlämning</a>
+    <a asp-controller="Loan" asp-action="" class="btn btn-primary">Uppdatera påminnelse</a>
+    <a asp-controller="Loan" asp-action="" class="btn btn-danger">Ta bort påminnelse</a>
+</div>
