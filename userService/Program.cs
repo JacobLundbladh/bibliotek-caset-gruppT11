@@ -14,6 +14,11 @@ builder.Services.AddDbContext<UserServiceDbContext>(options =>
 });
 
 
+// Lägg till services
+builder.Services.AddControllers();       // för API controllers
+builder.Services.AddEndpointsApiExplorer(); // swagger osv om du vill
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
 
@@ -25,6 +30,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Middleware
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 
 app.UseAuthorization();
