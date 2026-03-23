@@ -1,4 +1,5 @@
 using bibliotekssystem.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,9 @@ builder.Services.AddHttpClient<LoanService>((serviceProvider, httpClient) =>
     httpClient.BaseAddress = new Uri(adress);
 });
 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme) // Cookis logik
+    .AddCookie(Options => Options.LoginPath = "/Account/Index");
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -31,6 +35,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace loanService.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class LoanController : ControllerBase
 {
     
