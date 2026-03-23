@@ -13,7 +13,7 @@ public class LoanController : Controller
         _loanService = loanService;
     }
     
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
         //Loan[] loans = await _loanService.GetLoans();
         return View();
@@ -27,7 +27,7 @@ public class LoanController : Controller
     }
     
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
         return View();
     }
