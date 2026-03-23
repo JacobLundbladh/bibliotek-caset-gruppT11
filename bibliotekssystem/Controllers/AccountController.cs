@@ -5,14 +5,52 @@ using bibliotekssystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using bibliotekssystem.Services;
 
 public class AccountController : Controller
 {
+    private AccountService _accountService;
+
+    public AccountController(AccountService accountService)
+    {
+        _accountService = accountService;
+    }
+    
     public IActionResult Index(string returnUrl)
     {
         ViewData["ReturnUrl"] = returnUrl;
         return View();
     }
+
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateAccount(Account account)
+    {   
+        if (string.IsNullOrEmpty(account.Username) || string.IsNullOrEmpty(account.Password) || string.IsNullOrEmpty(account.Role))
+        {
+            Console.WriteLine("Formuläret är inte komplett");
+            return View("Create", account);
+        }
+        
+        bool success = await _accountService.CreateAccount(account); // skicka till service/API
+
+        if (success)
+        {
+            Console.WriteLine("Account created successfully");
+                        
+        }
+        else
+        {
+            Console.WriteLine("Account creation failed");
+             
+        }
+        return View("Index"); // 
+    }
+    
 
     [HttpPost]
     public async Task<IActionResult> Index(Account account, string returnUrl)
