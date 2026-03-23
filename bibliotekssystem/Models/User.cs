@@ -1,5 +1,5 @@
 ﻿namespace bibliotekssystem.Models;
-
+ // Ta bort denna 
 public class User
 {
     public int Id { get; set; } // PK key
