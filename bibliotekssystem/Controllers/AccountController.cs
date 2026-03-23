@@ -27,6 +27,8 @@ public class AccountController : Controller
         return View();
     }
 
+   
+    
     [HttpPost]
     public async Task<IActionResult> CreateAccount(Account account)
     {   
@@ -80,4 +82,29 @@ public class AccountController : Controller
         // Gå tillbaka via returnUrl
         return Redirect(returnUrl);
     }
+    
+    
+    public async Task<IActionResult> Delete()
+    {
+        Account[] accounts = await _accountService.GetAccounts();
+        return View(accounts);
+    }
+
+
+    public async Task<IActionResult> DeleteAccount(int id)
+    {
+        bool success = await _accountService.DeleteAccounts(id);
+
+        if (success)
+        {
+            Console.WriteLine("Account deletd");
+            return RedirectToAction("Delete");
+        }
+        else
+        {
+            Console.WriteLine("Deletion failed");
+            return RedirectToAction("Delete");
+        }
+    }
+
 }
