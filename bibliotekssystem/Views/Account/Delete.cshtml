@@ -1,0 +1,36 @@
+﻿@model Account
+
+
+@{
+    ViewData["Title"] = "Ta bort konto";
+}
+<h2>@ViewData["Title"]</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <p>Inga lån tillgängliga</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Användare</th>
+            <th>Sak</th>
+            <th>Datum</th>
+            <th>Återlämnings datum</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var loans in Model)
+        {
+            <tr>    <!-- ? för att göra till null om är null, sista ? gör, om sant gör : om falskt gör-->
+                <td>@(loans?.UserId != null ? loans.UserId.ToString() : "")</td> <!-- ?? "" kollar också om null-->
+                <td>@(loans?.LoanDate.ToString("yy-MM-dd") ?? "")</td>
+                <td>@(loans?.DueDate.ToString("yy-MM-dd") ?? "")</td>
+                <td>@(loans?.ReturnDate != null ? loans.ReturnDate.Value.ToString("yy-MM-dd") : "")</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
