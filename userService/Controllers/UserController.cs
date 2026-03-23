@@ -1,7 +1,7 @@
 ﻿using userService.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using userService;
+using Microsoft.AspNetCore.Identity;
 namespace userService.Controllers;
 
 [ApiController]
@@ -48,15 +48,24 @@ public class UserController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> PostUser(User user)
     {
-        await _dbContext.Users.AddAsync(user); // Lägg till lån
+        if (user == null)
+        {
+            return BadRequest();
+        }
+        // Hash
+        var hasher = new PasswordHasher<User>();
+        user.Password = hasher.HashPassword(null, user.Password);
+        
+        
+        await _dbContext.Users.AddAsync(user); // Lägg till 
         await _dbContext.SaveChangesAsync(); // Spara ändringar
-        return Ok(user); // Skicka tillbaka att det lyckades
+        return Ok(); // Skicka tillbaka att det lyckades
     }
 
     [HttpDelete("{id}")] // HttpDelete för att ta bort
     public async Task<IActionResult> DeleteUser(int id)
     {
-        var user = await _dbContext.Users.FindAsync(id); // Hitta lån med det id
+        var user = await _dbContext.Users.FindAsync(id); // Hitta med det id
 
         if (user == null)
         {
@@ -77,7 +86,7 @@ public class UserController : ControllerBase
 
         var existingUser = await _dbContext.Users.FindAsync(id);
         
-        if (existingUser == null) // Kolla så lån finns
+        if (existingUser == null) // Kolla så finns
         {
             return NotFound();
         }
