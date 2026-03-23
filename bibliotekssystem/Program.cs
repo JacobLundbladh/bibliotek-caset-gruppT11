@@ -19,6 +19,17 @@ builder.Services.AddHttpClient<LoanService>((serviceProvider, httpClient) =>
     httpClient.BaseAddress = new Uri(adress);
 });
 
+// Lägg till HttpClient till UserService
+builder.Services.AddHttpClient<AccountService>((serviceProvider, httpClient) =>
+{
+    // Hämta config
+    var config = serviceProvider.GetRequiredService<IConfiguration>();
+
+    // Hämta adress
+    string adress = config.GetValue<string>("UserServiceAdress") ?? "";
+    
+    httpClient.BaseAddress = new Uri(adress);
+});
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme) // Cookis logik
     .AddCookie(Options => Options.LoginPath = "/Account/Index");
 
