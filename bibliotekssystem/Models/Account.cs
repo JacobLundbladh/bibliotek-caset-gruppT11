@@ -1,7 +1,9 @@
 ﻿namespace bibliotekssystem.Models;
-
+ // Samma som User
 public class Account
 {
-    public string Username { get; set; }
-    public string Password { get; set; }
+    public int Id { get; set; } // PK key
+    public required string Username { get; set; }
+    public required string Password { get; set; }
+    public required string Role { get; set; }
 }
