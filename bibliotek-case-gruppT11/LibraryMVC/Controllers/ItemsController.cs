@@ -1,12 +1,12 @@
 ﻿using System.Net.Http.Json;
-using bibliotekssystem.Models;
+using LibraryMVC.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace bibliotekssystem.Controllers;
+namespace LibraryMVC.Controllers;
 
 [Authorize]
-public class ItemController : Controller
+public class ItemsController : Controller
 {
     private readonly HttpClient _http = new HttpClient();
 

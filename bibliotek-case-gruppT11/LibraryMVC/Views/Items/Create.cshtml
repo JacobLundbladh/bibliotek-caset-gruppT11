@@ -1,0 +1,38 @@
+﻿@model LibraryMVC.Models.Item
+
+<h1>Lägg till objekt</h1>
+
+<form method="post">
+    <div>
+        <label>Id</label>
+        <input asp-for="Id" />
+    </div>
+
+    <div>
+        <label>Titel</label>
+        <input asp-for="Title" />
+    </div>
+
+    <div>
+        <label>Kategori</label>
+        <input asp-for="Category" />
+    </div>
+
+    <div>
+        <label>Beskrivning</label>
+        <input asp-for="Description" />
+    </div>
+
+    <div>
+        <label>Tillgänglig</label>
+        <input asp-for="IsAvailable" />
+    </div>
+
+    <br />
+
+    <button type="submit">Spara</button>
+</form>
+
+<p>
+    <a asp-action="Index">Tillbaka</a>
+</p>

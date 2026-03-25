@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Startsida";
+}
+
+<h1>Bibliotekssystem</h1>
+
+@if (User.Identity != null && User.Identity.IsAuthenticated)
+{
+    <p>Inloggad som: @User.Identity.Name</p>
+
+    @if (User.Identity.Name == "admin")
+    {
+        <p>
+            <a asp-controller="Admin" asp-action="Index">Gå till adminsidan</a>
+        </p>
+    }
+    else
+    {
+        <p>
+            <a asp-controller="User" asp-action="Index">Gå till användarsidan</a>
+        </p>
+    }
+
+    <p>
+        <a asp-controller="Items" asp-action="Index">Visa objekt</a>
+    </p>
+
+    <p>
+        <a asp-controller="Account" asp-action="SignOutUser">Logga ut</a>
+    </p>
+}
+else
+{
+    <p>
+        <a asp-controller="Account" asp-action="Index">Logga in</a>
+    </p>
+}

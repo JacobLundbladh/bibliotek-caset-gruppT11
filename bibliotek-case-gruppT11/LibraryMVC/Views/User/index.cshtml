@@ -1,17 +1,15 @@
-﻿@model List<bibliotekssystem.Models.Item>
-
-@{
-    ViewData["Title"] = "Objekt";
-}
+@model List<LibraryMVC.Models.Item>
 
 <h1>Objekt</h1>
 
 @if (User.Identity?.Name == "admin")
 {
-    <p><a asp-action="Create" class="btn btn-primary">Lägg till objekt</a></p>
+    <p>
+        <a asp-action="Create">Lägg till objekt</a>
+    </p>
 }
 
-<table class="table">
+<table>
     <thead>
     <tr>
         <th>Id</th>
@@ -24,6 +22,7 @@
     <tbody>
     @foreach (var item in Model)
     {
+        
         <tr>
             <td>@item.Id</td>
             <td>@item.Title</td>
@@ -34,3 +33,7 @@
     }
     </tbody>
 </table>
+
+<p>
+    <a asp-controller="Home" asp-action="Index">Till startsidan</a>
+</p>
