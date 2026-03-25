@@ -45,7 +45,7 @@
                         @if (User.Identity != null && User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <span class="nav-link">Inloggad som: @User.Identity.Name</span>
+                                <a class="nav-link" asp-controller="Account" asp-action="Index">Inloggad som: @User.Identity.Name</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Account" asp-action="SignOutUser">Logga ut</a>
