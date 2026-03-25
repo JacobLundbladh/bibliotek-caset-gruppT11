@@ -30,6 +30,7 @@ builder.Services.AddHttpClient<AccountService>((serviceProvider, httpClient) =>
     
     httpClient.BaseAddress = new Uri(adress);
 });
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme) // Cookis logik
     .AddCookie(Options => Options.LoginPath = "/Account/Index");
 
