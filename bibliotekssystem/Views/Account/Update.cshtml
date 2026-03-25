@@ -1,7 +1,7 @@
 ﻿@model Account
+@using System.Security.Claims
 
-
-<h1>Skapa konto</h1>
+<h1>Uppdatera konto</h1>
 
 
 @if(ViewBag.ErrorMessage != null)
@@ -9,10 +9,11 @@
     <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
 }
 
-<form asp-action="CreateAccount" method="post">
+<form asp-action="UpdateAccount" method="post">
+    <input type="hidden" asp-for="Id" />
     <table>
         <tr>
-            <td>Användarnamn</td>
+            <td>Användarnamn: "@User.Identity.Name"</td>
             <td><input asp-for="Username"/></td>
         </tr>
         <tr>
@@ -20,7 +21,7 @@
             <td><input type="password" asp-for="Password"></td>
         </tr>
         <tr>
-            <td>Roll</td>
+            <td>Roll: @User.FindFirst(ClaimTypes.Role)?.Value</td>
             <td>
                 <select asp-for="Role">
                     <option value="Slutanvändare">Slutanvändare</option>
@@ -29,7 +30,7 @@
             </td>
         </tr>
         <tr>
-            <td><input type="submit" value="Skapa konto"/></td>
+            <td><input type="submit" value="Uppdatera konto"/></td>
         </tr>
     </table>
 </form>
