@@ -46,6 +46,22 @@ public class LoanService
         }
     }
     
+    public async Task<Loan[]> GetLoanByUser(int userId)
+    {
+        try // Fel hantering
+        {
+
+            var result = await _httpClient.GetFromJsonAsync<Loan[]>($"loan/user/{userId}");
+            return result ??  Array.Empty<Loan>(); // Ifall null skicka till backa tom array
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+            return Array.Empty<Loan>();
+        }
+    }
+
+    
     // Skapa lån
  
     public async Task<bool> CreateLoan(Loan loan)
@@ -86,6 +102,19 @@ public class LoanService
             return Array.Empty<Item>();
         }
     }
-
+    
+    public async Task<Item?> GetItem(int id)
+    {
+        try
+        {
+            var result = await _httpClient.GetFromJsonAsync<Item>($"items/{id}");
+            return result;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+            return null;
+        }
+    }
     
 }
