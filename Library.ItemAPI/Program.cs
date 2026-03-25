@@ -1,8 +1,14 @@
+using Library.ItemAPI.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<LibraryDbContext>(options =>
+    options.UseSqlite("Data Source=library.db"));
 
 var app = builder.Build();
 
