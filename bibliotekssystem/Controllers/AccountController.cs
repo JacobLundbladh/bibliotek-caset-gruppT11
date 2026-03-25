@@ -135,10 +135,24 @@ public class AccountController : Controller
     public async Task<IActionResult> DeleteAccount(int id)
     {
         bool success = await _accountService.DeleteAccounts(id);
-
+        
+        // Hämta userId från cookie (claims)
+        var userIdClaim = (User.FindFirst("UserId")?.Value);
+        bool isSelf = false;
+        
+        if (userIdClaim != null && int.TryParse(userIdClaim, out int currentUserId))
+        {
+            isSelf = currentUserId == id;
+        }
+        
         if (success)
         {
             Console.WriteLine("Account deletd");
+            if (isSelf)
+            {
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                return RedirectToAction("Index", "Home");
+            }
             return RedirectToAction("Delete");
         }
         else
