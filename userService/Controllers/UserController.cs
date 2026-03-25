@@ -49,30 +49,43 @@ public class UserController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> PostUser(User user)
     {
-        if (user == null)
+        try
         {
-            return BadRequest();
-        }
+            if (user == null)
+            {
+                return BadRequest();
+            }
         
+            if (string.IsNullOrWhiteSpace(user.Username) ||
+                string.IsNullOrWhiteSpace(user.Password) ||
+                string.IsNullOrWhiteSpace(user.Role))
+            {
+                return BadRequest("Alla fält måste fyllas i.");
+            }
         
-        // Kolla om username redan finns
-        var existingUser = await _dbContext.Users
-            .FirstOrDefaultAsync(u => u.Username == user.Username);
+            // Kolla om username redan finns
+            var existingUser = await _dbContext.Users
+                .FirstOrDefaultAsync(u => u.Username == user.Username);
 
-        if (existingUser != null)
+            if (existingUser != null)
+            {
+                return BadRequest("Användarnamn finns redan");
+            }
+
+        
+            // Hash
+            var hasher = new PasswordHasher<User>();
+            user.Password = hasher.HashPassword(user, user.Password);
+        
+        
+            await _dbContext.Users.AddAsync(user); // Lägg till 
+            await _dbContext.SaveChangesAsync(); // Spara ändringar
+            return Ok(); // Skicka tillbaka att det lyckades, knaske user
+        }
+        catch (Exception ex)
         {
-            return BadRequest("Användarnamn finns redan");
+            return BadRequest(ex.Message);
         }
-
-        
-        // Hash
-        var hasher = new PasswordHasher<User>();
-        user.Password = hasher.HashPassword(null, user.Password);
-        
-        
-        await _dbContext.Users.AddAsync(user); // Lägg till 
-        await _dbContext.SaveChangesAsync(); // Spara ändringar
-        return Ok(); // Skicka tillbaka att det lyckades
     }
 
     [HttpDelete("{id}")] // HttpDelete för att ta bort
