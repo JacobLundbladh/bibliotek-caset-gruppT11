@@ -1,0 +1,16 @@
+﻿
+
+@{
+    ViewData["Title"] = "Lån Sida";
+}
+<div style="display: flex; justify-content: center">
+    <h2>@ViewData["Title"]</h2>
+</div>
+
+
+<div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 50px;">
+    <a asp-controller="Loan" asp-action="Show" class="btn btn-primary">Visa lån</a>
+    <a asp-controller="Loan" asp-action="Create" class="btn btn-primary">Skapa lån</a>
+    <a asp-controller="Loan" asp-action="Edit" class="btn btn-primary">Uppdatera lån</a>
+    <a asp-controller="Loan" asp-action="Delete" class="btn btn-danger">Ta bort lån</a>
+</div>

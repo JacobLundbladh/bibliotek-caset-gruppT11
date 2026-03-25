@@ -1,0 +1,25 @@
+﻿@using System.Security.Claims
+
+
+
+@{
+    ViewData["Title"] = "Ditt konto";
+}
+<h2>@ViewData["Title"]</h2>
+
+
+<p>Ditt användarnamn :@User.Identity.Name</p>
+<p>Din roll: @User.FindFirst(ClaimTypes.Role)?.Value</p>
+
+
+<form asp-action="DeleteAccount" method="post">
+    <input type="hidden" name="id" value="@User.FindFirst("UserId")?.Value" />
+    <button type="submit">Ta bort</button>
+</form>
+<form asp-action="Update" method="post">
+    <button type="submit">Uppdatera konto</button>
+</form>
+<form asp-action="SignOutUser" method="post">
+    <button type="submit">Logga ut</button>
+</form>
+

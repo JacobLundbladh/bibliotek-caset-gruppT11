@@ -1,0 +1,6 @@
+@loanService_HostAddress = http://localhost:5224
+
+GET {{loanService_HostAddress}}/loanService/
+Accept: application/json
+
+###

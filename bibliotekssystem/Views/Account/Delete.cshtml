@@ -1,0 +1,40 @@
+﻿@model Account[]
+
+
+@{
+    ViewData["Title"] = "Ta bort konto";
+}
+<h2>@ViewData["Title"]</h2>
+
+@if (Model == null || !Model.Any()) // Behöver nog skicka med Account modell via controller
+{
+    <p>Inga konton tillgängliga</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Användarnamn</th>
+            <th>Rol</th>
+            <th>Ta bort</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        @foreach (var accounts in Model)
+        {
+            <tr>
+                <td>@accounts?.Username</td>
+                <td>@accounts?.Role</td>
+                <td>
+                    <form asp-action="DeleteAccount" method="post">
+                        <input type="hidden" name="id" value="@accounts.Id" />
+                        <button type="submit">Ta bort</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

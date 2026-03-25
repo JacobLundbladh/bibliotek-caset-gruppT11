@@ -1,0 +1,36 @@
+﻿@model List<bibliotekssystem.Models.Item>
+
+@{
+    ViewData["Title"] = "Objekt";
+}
+
+<h1>Objekt</h1>
+
+@if (User.Identity?.Name == "admin")
+{
+    <p><a asp-action="Create" class="btn btn-primary">Lägg till objekt</a></p>
+}
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Titel</th>
+        <th>Kategori</th>
+        <th>Beskrivning</th>
+        <th>Tillgänglig</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.Title</td>
+            <td>@item.Category</td>
+            <td>@item.Description</td>
+            <td>@item.IsAvailable</td>
+        </tr>
+    }
+    </tbody>
+</table>
