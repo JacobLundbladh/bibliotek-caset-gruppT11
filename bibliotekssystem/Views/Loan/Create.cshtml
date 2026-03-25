@@ -33,7 +33,7 @@ else
                 <td>@items.Category</td>
                 <td>@items.Description</td>
                 <td>
-                    <form asp-action="" method="post">
+                    <form asp-action="Finish" method="post">
                         <input type="hidden" name="id" value="@items.Id" />
                         <button type="submit">Låna</button>
                     </form>
