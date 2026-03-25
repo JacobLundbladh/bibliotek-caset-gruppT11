@@ -71,5 +71,21 @@ public class LoanService
         }
     }
 
+    public async Task<Item[]> GetItems()
+    {
+        
+        try // Fel hantering
+        {
+
+            var result = await _httpClient.GetFromJsonAsync<Item[]>("items"); // Stor/liten
+            return result ??  Array.Empty<Item>(); // Ifall null skicka till backa tom array
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+            return Array.Empty<Item>();
+        }
+    }
+
     
 }

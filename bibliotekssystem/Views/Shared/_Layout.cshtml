@@ -1,3 +1,4 @@
+@using System.Security.Claims
 <!DOCTYPE html>
 <html lang="sv">
 <head>
@@ -38,19 +39,29 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-controller="Reminder" asp-action="Index">Påminnelse</a>
                     </li>
-
-                    @if (User.Identity != null && User.Identity.IsAuthenticated)
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Account" asp-action="SignOutUser">Logga ut</a>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Account" asp-action="Index">Logga in</a>
-                        </li>
-                    }
+                    <!-- Konto nav del -->
+                    <ul class="navbar-nav ms-auto">
+                        
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <span class="nav-link">Inloggad som: @User.Identity.Name</span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Account" asp-action="SignOutUser">Logga ut</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Index">Logga in</a>
+                            </li>
+                        }
+                        
+                    </ul>
+                    
+                     
+                   
                 </ul>
             </div>
         </div>

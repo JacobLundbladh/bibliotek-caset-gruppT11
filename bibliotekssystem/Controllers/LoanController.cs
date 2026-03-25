@@ -27,9 +27,10 @@ public class LoanController : Controller
     }
     
     [HttpGet]
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        return View();
+        Item[] items = await _loanService.GetItems();
+        return View(items);
     }
     [HttpPost]
     public async Task<IActionResult> Create(Loan loan) // Skapa lån objekt
