@@ -34,6 +34,15 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+// Migrera databas
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var dbContext = services.GetRequiredService<UserServiceDbContext>();
+    dbContext.Database.Migrate();
+}
+
+
 
 // Configure the HTTP request pipeline. 
 if (app.Environment.IsDevelopment())
