@@ -1,5 +1,6 @@
 using Library.ReminderAPI.Data;
 using Microsoft.EntityFrameworkCore;
+using Library.ReminderAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<LibraryContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<ReminderService>();
 
 var app = builder.Build();
 

@@ -45,6 +45,13 @@ builder.Services.AddHttpClient<AccountService>((serviceProvider, httpClient) =>
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options => options.LoginPath = "/Account/Index");
 
+builder.Services.AddScoped<ReminderService>();
+
+builder.Services.AddHttpClient("ReminderService", client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["ReminderServiceAddress"]);
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,7 +1,6 @@
-using Library.ReminderAPI.Data;
 using Library.ReminderAPI.Models;
+using Library.ReminderAPI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Library.ReminderAPI.Controllers
 {
@@ -9,37 +8,37 @@ namespace Library.ReminderAPI.Controllers
     [ApiController]
     public class RemindersController : ControllerBase
     {
-        private readonly LibraryContext _context;
+        private readonly ReminderService _reminderService;
 
-        public RemindersController(LibraryContext context)
+        public RemindersController(ReminderService reminderService)
         {
-            _context = context;
+            _reminderService = reminderService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Reminder>>> GetReminders()
         {
-            return await _context.Reminders.ToListAsync();
+            var reminders = await _reminderService.GetAllAsync();
+            return Ok(reminders);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Reminder>> GetReminder(int id)
         {
-            var reminder = await _context.Reminders.FindAsync(id);
+            var reminder = await _reminderService.GetByIdAsync(id);
 
             if (reminder == null)
                 return NotFound();
 
-            return reminder;
+            return Ok(reminder);
         }
 
         [HttpPost]
         public async Task<ActionResult<Reminder>> PostReminder(Reminder reminder)
         {
-            _context.Reminders.Add(reminder);
-            await _context.SaveChangesAsync();
+            var createdReminder = await _reminderService.CreateAsync(reminder);
 
-            return CreatedAtAction(nameof(GetReminder), new { id = reminder.Id }, reminder);
+            return CreatedAtAction(nameof(GetReminder), new { id = createdReminder.Id }, createdReminder);
         }
 
         [HttpPut("{id}")]
@@ -48,8 +47,10 @@ namespace Library.ReminderAPI.Controllers
             if (id != reminder.Id)
                 return BadRequest();
 
-            _context.Entry(reminder).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            var updated = await _reminderService.UpdateAsync(reminder);
+
+            if (!updated)
+                return NotFound();
 
             return NoContent();
         }
@@ -57,13 +58,10 @@ namespace Library.ReminderAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReminder(int id)
         {
-            var reminder = await _context.Reminders.FindAsync(id);
+            var deleted = await _reminderService.DeleteAsync(id);
 
-            if (reminder == null)
+            if (!deleted)
                 return NotFound();
-
-            _context.Reminders.Remove(reminder);
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }
