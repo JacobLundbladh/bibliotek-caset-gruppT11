@@ -1,5 +1,7 @@
-﻿using Library.ItemAPI.Models;
+﻿using Library.ItemAPI.Data;
+using Library.ItemAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Library.ItemAPI.Controllers;
 
@@ -7,57 +9,74 @@ namespace Library.ItemAPI.Controllers;
 [Route("api/[controller]")]
 public class ItemsController : ControllerBase
 {
-    private static List<Item> items = new List<Item>();
+    private readonly LibraryDbContext _context;
+
+    public ItemsController(LibraryDbContext context)
+    {
+        _context = context;
+    }
 
     [HttpGet]
-    public ActionResult<IEnumerable<Item>> GetItems()
+    public async Task<ActionResult<IEnumerable<Item>>> GetItems()
     {
-        return items;
-    } 
+        var items = await _context.Items.ToListAsync();
+        return Ok(items);
+    }
 
     [HttpGet("{id}")]
-    public ActionResult<Item> GetItem(int id)
+    public async Task<ActionResult<Item>> GetItem(int id)
     {
-        var item = items.FirstOrDefault(i => i.Id == id);
+        var item = await _context.Items.FirstOrDefaultAsync(i => i.Id == id);
 
         if (item == null)
+        {
             return NotFound();
+        }
 
-        return item;
+        return Ok(item);
     }
 
     [HttpPost]
-    public ActionResult<Item> CreateItem(Item item)
+    public async Task<ActionResult<Item>> CreateItem(Item item)
     {
-        items.Add(item);
-        return item;
+        _context.Items.Add(item);
+        await _context.SaveChangesAsync();
+
+        return CreatedAtAction(nameof(GetItem), new { id = item.Id }, item);
     }
 
     [HttpPut("{id}")]
-    public IActionResult UpdateItem(int id, Item updatedItem)
+    public async Task<IActionResult> UpdateItem(int id, Item updatedItem)
     {
-        var item = items.FirstOrDefault(i => i.Id == id);
+        var item = await _context.Items.FirstOrDefaultAsync(i => i.Id == id);
 
         if (item == null)
+        {
             return NotFound();
+        }
 
         item.Title = updatedItem.Title;
         item.Category = updatedItem.Category;
         item.Description = updatedItem.Description;
         item.IsAvailable = updatedItem.IsAvailable;
 
+        await _context.SaveChangesAsync();
+
         return NoContent();
     }
 
     [HttpDelete("{id}")]
-    public IActionResult DeleteItem(int id)
+    public async Task<IActionResult> DeleteItem(int id)
     {
-        var item = items.FirstOrDefault(i => i.Id == id);
+        var item = await _context.Items.FirstOrDefaultAsync(i => i.Id == id);
 
         if (item == null)
+        {
             return NotFound();
+        }
 
-        items.Remove(item);
+        _context.Items.Remove(item);
+        await _context.SaveChangesAsync();
 
         return NoContent();
     }

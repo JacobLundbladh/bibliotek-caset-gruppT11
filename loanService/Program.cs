@@ -1,5 +1,6 @@
 using loanService.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,18 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.Converters.Add(new loanService.DateTimeConverter());
 });
+
+// Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Loan Service API",
+        Version = "v1"
+    });
+});
+
 
 // Add services to the container.
 
@@ -39,6 +52,14 @@ if (app.Environment.IsDevelopment())
 //    app.MapOpenApi();  -Negraderade till net 8 så detta funkar inte längre
     app.MapScalarApiReference();
 }
+
+
+
+// Swagger
+app.UseSwagger();
+app.UseSwaggerUI();
+
+
 
 app.UseHttpsRedirection();
 

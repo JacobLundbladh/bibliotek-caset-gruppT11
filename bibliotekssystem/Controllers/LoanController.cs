@@ -27,9 +27,10 @@ public class LoanController : Controller
     }
     
     [HttpGet]
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        return View();
+        Item[] items = await _loanService.GetItems();
+        return View(items);
     }
     [HttpPost]
     public async Task<IActionResult> Create(Loan loan) // Skapa lån objekt
@@ -47,5 +48,28 @@ public class LoanController : Controller
             return RedirectToAction("Show"); // gå till lista av lån
         else
             return View(loan); // visa formuläret igen vid fel
+    }
+
+    public async Task<IActionResult> MyLoans()
+    {
+        
+        var userIdClaim = User.FindFirst("UserId")?.Value;
+
+        if (!int.TryParse(userIdClaim, out int userId))
+            return Forbid();
+        
+        Loan[] loans = await _loanService.GetLoanByUser(userId);
+        
+        return View(loans);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Finish(int id)
+    {
+        var item = await _loanService.GetItem(id);
+        if (item == null)
+            return NotFound();
+        
+        return View(); // item ska skickas
     }
 }

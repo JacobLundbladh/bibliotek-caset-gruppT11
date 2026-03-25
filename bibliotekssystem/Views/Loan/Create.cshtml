@@ -1,4 +1,6 @@
-﻿@model Loan
+﻿@model Item[] 
+
+
 
 @{
     ViewData["Title"] = "Skapa lån";
@@ -8,12 +10,36 @@
 </div>
 
 
-<form method="post" asp-action="Create">  <!-- Anropar POST metoden av Create i LoanController-->
-    <select name="selectedItem" asp-for="ItemId">
-        <option value="1">Bok</option>
-        <option value="2">Rapport</option>
-        <option value="3">Teknisk utrustning</option>
-    </select>
-
-    <button type="submit">Skapa</button>
-    </form>
+@if (Model == null || !Model.Any()) // Behöver skicka med Item modell från tidigare sidan
+{
+    <p>Inga konton tillgängliga</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Namn</th>
+            <th>Kategori</th>
+            <th>Beskrivning</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        @foreach (var items in Model.Where(model => model.IsAvailable))
+        {
+            <tr>
+                <td>@items.Title</td>
+                <td>@items.Category</td>
+                <td>@items.Description</td>
+                <td>
+                    <form asp-action="Finish" method="post">
+                        <input type="hidden" name="id" value="@items.Id" />
+                        <button type="submit">Låna</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>    
+    </table>
+}

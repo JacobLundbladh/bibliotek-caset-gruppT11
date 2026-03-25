@@ -1,0 +1,35 @@
+﻿@model Account
+
+
+<h1>Skapa konto</h1>
+
+
+@if(ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+}
+
+<form asp-action="CreateAccount" method="post">
+    <table>
+        <tr>
+            <td>Användarnamn</td>
+            <td><input asp-for="Username"/></td>
+        </tr>
+        <tr>
+            <td>Lösenord</td>
+            <td><input type="password" asp-for="Password"></td>
+        </tr>
+        <tr>
+            <td>Roll</td>
+            <td>
+                <select asp-for="Role">
+                    <option value="Slutanvändare">Slutanvändare</option>
+                    <option value="Admin">Administratör</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Skapa konto"/></td>
+        </tr>
+    </table>
+</form>

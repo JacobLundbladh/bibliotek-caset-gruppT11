@@ -1,0 +1,36 @@
+﻿@model Account
+@using System.Security.Claims
+
+<h1>Uppdatera konto</h1>
+
+
+@if(ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+}
+
+<form asp-action="UpdateAccount" method="post">
+    <input type="hidden" asp-for="Id" />
+    <table>
+        <tr>
+            <td>Användarnamn: "@User.Identity.Name"</td>
+            <td><input asp-for="Username"/></td>
+        </tr>
+        <tr>
+            <td>Lösenord</td>
+            <td><input type="password" asp-for="Password"></td>
+        </tr>
+        <tr>
+            <td>Roll: @User.FindFirst(ClaimTypes.Role)?.Value</td>
+            <td>
+                <select asp-for="Role">
+                    <option value="Slutanvändare">Slutanvändare</option>
+                    <option value="Admin">Administratör</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Uppdatera konto"/></td>
+        </tr>
+    </table>
+</form>

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace loanService.Controllers;
-
+// Jacob
 [ApiController]
 [Route("api/[controller]")]
 public class LoanController : ControllerBase
@@ -77,5 +77,12 @@ public class LoanController : ControllerBase
         
         return NoContent(); 
 
+    }
+    
+    [HttpGet("user/{userId}")]
+    public async Task<Loan[]> GetLoansByUser(int userId)
+    {
+        var loans = await _dbContext.Loans.Where(loan => loan.UserId == userId).ToArrayAsync();
+        return loans;
     }
 }
