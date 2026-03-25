@@ -53,6 +53,18 @@ public class UserController : ControllerBase
         {
             return BadRequest();
         }
+        
+        
+        // Kolla om username redan finns
+        var existingUser = await _dbContext.Users
+            .FirstOrDefaultAsync(u => u.Username == user.Username);
+
+        if (existingUser != null)
+        {
+            return BadRequest("Användarnamn finns redan");
+        }
+
+        
         // Hash
         var hasher = new PasswordHasher<User>();
         user.Password = hasher.HashPassword(null, user.Password);
@@ -93,11 +105,46 @@ public class UserController : ControllerBase
         }
         
         // Updatera fält
+        if (!string.IsNullOrEmpty(user.Username))
+        {
+            existingUser.Username = user.Username;
+        }
         
+        if (!string.IsNullOrEmpty(user.Password))
+        {
+            var hasher = new PasswordHasher<User>();
+            existingUser.Password = hasher.HashPassword(existingUser, user.Password);
+        }
+        
+        if (!string.IsNullOrEmpty(user.Role))
+        {
+            existingUser.Role = user.Role;
+        }
 
+        
         await _dbContext.SaveChangesAsync(); // Spara till databas
         
         return NoContent(); 
 
-    } 
+    }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(User loginUser)
+    {
+        var user = await _dbContext.Users
+            .FirstOrDefaultAsync(user => user.Username == loginUser.Username);
+        if (user == null)
+        {
+            return Unauthorized();
+        }
+
+        var hasher = new PasswordHasher<User>();
+        var result = hasher.VerifyHashedPassword(user, user.Password, loginUser.Password);
+
+        if (result == PasswordVerificationResult.Failed)
+        {
+            return Unauthorized();
+        }
+        return Ok(user); // User kanske inte behövs
+    }
 }
