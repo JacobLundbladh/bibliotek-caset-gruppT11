@@ -1,6 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# 
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bibliotekssystem", "bibliotekssystem\bibliotekssystem.csproj", "{B92705E3-1351-4DC5-983A-CFA138448E78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.ItemAPI", "Library.ItemAPI\Library.ItemAPI.csproj", "{136CDD0F-E205-45AE-9A57-70B716F3AA4B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +15,9 @@ Global
 		{B92705E3-1351-4DC5-983A-CFA138448E78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B92705E3-1351-4DC5-983A-CFA138448E78}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B92705E3-1351-4DC5-983A-CFA138448E78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{136CDD0F-E205-45AE-9A57-70B716F3AA4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{136CDD0F-E205-45AE-9A57-70B716F3AA4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{136CDD0F-E205-45AE-9A57-70B716F3AA4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{136CDD0F-E205-45AE-9A57-70B716F3AA4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
