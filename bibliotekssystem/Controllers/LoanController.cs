@@ -49,4 +49,27 @@ public class LoanController : Controller
         else
             return View(loan); // visa formuläret igen vid fel
     }
+
+    public async Task<IActionResult> MyLoans()
+    {
+        
+        var userIdClaim = User.FindFirst("UserId")?.Value;
+
+        if (!int.TryParse(userIdClaim, out int userId))
+            return Forbid();
+        
+        Loan[] loans = await _loanService.GetLoanByUser(userId);
+        
+        return View(loans);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Finish(int id)
+    {
+        var item = await _loanService.GetItem(id);
+        if (item == null)
+            return NotFound();
+        
+        return View(); // item ska skickas
+    }
 }

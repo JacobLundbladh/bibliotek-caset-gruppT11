@@ -59,7 +59,7 @@ public class AccountController : Controller
 
         return View(account); // Skicka med modell
     }
-    
+        
     [HttpPost]
     public async Task<IActionResult> CreateAccount(Account account)
     {   
