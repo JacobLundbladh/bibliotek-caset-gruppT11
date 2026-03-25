@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\larai\\RiderProjects\\bibliotek-caset-gruppT11\\Library.ItemAPI\\Library.ItemAPI.csproj": {}
+    "C:\\Users\\Dreni\\RiderProjects\\bibliotek-caset-gruppT11\\Library.ItemAPI\\Library.ItemAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\larai\\RiderProjects\\bibliotek-caset-gruppT11\\Library.ItemAPI\\Library.ItemAPI.csproj": {
+    "C:\\Users\\Dreni\\RiderProjects\\bibliotek-caset-gruppT11\\Library.ItemAPI\\Library.ItemAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\larai\\RiderProjects\\bibliotek-caset-gruppT11\\Library.ItemAPI\\Library.ItemAPI.csproj",
+        "projectUniqueName": "C:\\Users\\Dreni\\RiderProjects\\bibliotek-caset-gruppT11\\Library.ItemAPI\\Library.ItemAPI.csproj",
         "projectName": "Library.ItemAPI",
-        "projectPath": "C:\\Users\\larai\\RiderProjects\\bibliotek-caset-gruppT11\\Library.ItemAPI\\Library.ItemAPI.csproj",
-        "packagesPath": "C:\\Users\\larai\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\larai\\RiderProjects\\bibliotek-caset-gruppT11\\Library.ItemAPI\\obj\\",
+        "projectPath": "C:\\Users\\Dreni\\RiderProjects\\bibliotek-caset-gruppT11\\Library.ItemAPI\\Library.ItemAPI.csproj",
+        "packagesPath": "C:\\Users\\Dreni\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Dreni\\RiderProjects\\bibliotek-caset-gruppT11\\Library.ItemAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\larai\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Dreni\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -71,7 +71,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.419/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.402/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
