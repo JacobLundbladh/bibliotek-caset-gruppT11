@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using userService.Data;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,18 @@ builder.Services.AddDbContext<UserServiceDbContext>(options =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+// Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Loan Service API",
+        Version = "v1"
+    });
+});
+
 
 
 // Lägg till services
@@ -31,12 +44,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// Middleware
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+
+// Swagger
+app.UseSwagger();
+app.UseSwaggerUI();
+
+
 
 
 app.UseAuthorization();
