@@ -14,12 +14,12 @@
 
 <form asp-action="DeleteAccount" method="post">
     <input type="hidden" name="id" value="@User.FindFirst("UserId")?.Value" />
-    <button type="submit">Ta bort</button>
+    <button type="submit" class="btn btn-danger">Ta bort</button>
 </form>
 <form asp-action="Update" method="post">
-    <button type="submit">Uppdatera konto</button>
+    <button type="submit" class="btn btn-primary">Uppdatera konto</button>
 </form>
 <form asp-action="SignOutUser" method="post">
-    <button type="submit">Logga ut</button>
+    <button type="submit" class="btn btn-warning">Logga ut</button>
 </form>
 
