@@ -22,7 +22,7 @@ public class LoanController : Controller
        
     }
     
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Show()
     {
         var userIdClaim = User.FindFirst("UserId")?.Value;
