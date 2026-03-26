@@ -33,9 +33,9 @@ else
                 <td>@items.Category</td>
                 <td>@items.Description</td>
                 <td>
-                    <form asp-action="Finish" method="post">
+                    <form asp-action="Finish" method="get">
                         <input type="hidden" name="id" value="@items.Id" />
-                        <button type="submit">Låna</button>
+                        <button type="submit" class="btn btn-primary">Låna</button>
                     </form>
                 </td>
             </tr>

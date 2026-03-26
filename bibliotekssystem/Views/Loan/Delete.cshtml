@@ -1,7 +1,7 @@
-﻿@model LoanViewModel[]
+﻿@model LoanViewModel[]  
 
 @{
-    ViewData["Title"] = "Visa alla lån";
+    ViewData["Title"] = "Visa mina lån";
 }
 <h2>@ViewData["Title"]</h2>
 
@@ -16,7 +16,8 @@ else
         <tr>
             <th>Användare</th>
             <th>Sak</th>
-            <th>Datum</th>
+            <th>Lån-Datum</th>
+            <th>Lämna tillbaka</th>
             <th>Återlämnings datum</th>
         </tr>
         </thead>
@@ -31,17 +32,16 @@ else
                 <td>
                     @if (loans.ReturnDate == null)
                     {
-                        <p>Inte tillbakalämnad</p>
+                        <form asp-action="DeleteLoan" method="post">
+                            <input type="hidden" name="id" value="@loans.Id" />
+                            <button type="submit" class="btn btn-warning">Ta bort</button>
+                        </form>
                     }
                     else
                     {
                         @(loans?.ReturnDate != null ? loans.ReturnDate.Value.ToString("yy-MM-dd") : "")
                     }
                 </td>
-                <td> <form asp-action="DeleteLoan" method="post">
-                    <input type="hidden" name="id" value="@loans.Id" />
-                    <button type="submit" class="btn btn-warning">Ta bort</button>
-                </form></td>
                
             </tr>
             
@@ -49,5 +49,3 @@ else
         </tbody>
     </table>
 }
-
-
