@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using bibliotekssystem.Models;
 using bibliotekssystem.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace bibliotekssystem.Controllers;
 
@@ -19,19 +20,22 @@ public class LoanController : Controller
         return View();
        
     }
-
+    
+    [Authorize]
     public async Task<IActionResult> Show()
     {
         Loan[] loans = await _loanService.GetLoans();
         return View(loans);
     }
     
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> Create()
     {
         Item[] items = await _loanService.GetItems();
         return View(items);
     }
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Create(Loan loan) // Skapa lån objekt
     {
@@ -49,7 +53,8 @@ public class LoanController : Controller
         else
             return View(loan); // visa formuläret igen vid fel
     }
-
+    
+    [Authorize]
     public async Task<IActionResult> MyLoans()
     {
         
@@ -62,7 +67,8 @@ public class LoanController : Controller
         
         return View(loans);
     }
-
+    
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> Finish(int id)
     {
@@ -70,6 +76,36 @@ public class LoanController : Controller
         if (item == null)
             return NotFound();
         
-        return View(); // item ska skickas
+        return View(item); // item ska skickas
     }
+    
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> Finish(int itemId, DateTime dueDate)
+    {
+        var userIdClaim = User.FindFirst("UserId")?.Value; // Hämta id för användaren
+
+        if (!int.TryParse(userIdClaim, out int userId))
+            return Forbid();
+
+        var loan = new Loan // Sätt värden på lånet
+        {
+            ItemId = itemId,
+            UserId = userId,
+            LoanDate = DateTime.Now,
+            DueDate = dueDate,
+            Status = "Aktiv"
+        };
+
+        bool success = await _loanService.CreateLoan(loan);
+
+        if (success)
+            return RedirectToAction("Show");
+        
+        // Om inte lyckades skicka tillbaka item
+        var item = await _loanService.GetItem(itemId);
+        ViewBag.ErrorMessage = "Kunde inte skapa lånet";
+        return View(item);
+    }
+    
 }
