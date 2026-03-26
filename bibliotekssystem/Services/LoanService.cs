@@ -68,10 +68,10 @@ public class LoanService
     {
         // Hårdkoda fält som vi inte fyller i formuläret
         //loan.UserId = 42; // exempel på test-användare
-        loan.LoanDate = DateTime.Now;
-        loan.DueDate = DateTime.Now.AddDays(14); // 2 veckors lån
+        //loan.LoanDate = DateTime.Now;
+        //loan.DueDate = DateTime.Now.AddDays(14); // 2 veckors lån
         loan.ReturnDate = null;
-        loan.Status = "Active";
+        //loan.Status = "Active";
 
         try // Fel hantering
         {
