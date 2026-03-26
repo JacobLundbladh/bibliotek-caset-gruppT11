@@ -8,10 +8,12 @@ namespace bibliotekssystem.Controllers;
 public class LoanController : Controller
 {
     private LoanService _loanService;
+    private ItemService _itemService;
     
-    public LoanController(LoanService loanService)
+    public LoanController(LoanService loanService, ItemService itemService)
     {
         _loanService = loanService;
+        _itemService = itemService;
     }
     
     public IActionResult Index()
@@ -32,7 +34,7 @@ public class LoanController : Controller
     [HttpGet]
     public async Task<IActionResult> Create()
     {
-        Item[] items = await _loanService.GetItems();
+        Item[] items = await _itemService.GetItems();
         return View(items);
     }
     [Authorize]
@@ -72,7 +74,7 @@ public class LoanController : Controller
     [HttpGet]
     public async Task<IActionResult> Finish(int id)
     {
-        var item = await _loanService.GetItem(id);
+        var item = await _itemService.GetItem(id);
         if (item == null)
             return NotFound();
         
@@ -103,7 +105,7 @@ public class LoanController : Controller
             return RedirectToAction("Show");
         
         // Om inte lyckades skicka tillbaka item
-        var item = await _loanService.GetItem(itemId);
+        var item = await _itemService.GetItem(itemId);
         ViewBag.ErrorMessage = "Kunde inte skapa lånet";
         return View(item);
     }
