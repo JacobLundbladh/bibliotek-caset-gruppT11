@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using bibliotekssystem.Models;
 
 namespace bibliotekssystem.Services
 {
@@ -11,11 +12,10 @@ namespace bibliotekssystem.Services
             _httpClient = factory.CreateClient("ReminderService");
         }
 
-        public async Task<string> GetRemindersRawAsync()
+        public async Task<List<Reminder>> GetRemindersAsync()
         {
-            var response = await _httpClient.GetAsync("Reminders");
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsStringAsync();
+            var reminders = await _httpClient.GetFromJsonAsync<List<Reminder>>("Reminders");
+            return reminders ?? new List<Reminder>();
         }
     }
 }

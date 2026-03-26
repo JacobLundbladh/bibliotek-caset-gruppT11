@@ -1,11 +1,20 @@
-﻿namespace bibliotekssystem.Controllers;
+﻿using bibliotekssystem.Services;
 using Microsoft.AspNetCore.Mvc;
+
+namespace bibliotekssystem.Controllers;
 
 public class ReminderController : Controller
 {
+    private readonly ReminderService _reminderService;
 
-    public IActionResult Index()
+    public ReminderController(ReminderService reminderService)
     {
-        return View();
+        _reminderService = reminderService;
+    }
+
+    public async Task<IActionResult> Index()
+    {
+        var reminders = await _reminderService.GetRemindersAsync();
+        return View(reminders);
     }
 }
