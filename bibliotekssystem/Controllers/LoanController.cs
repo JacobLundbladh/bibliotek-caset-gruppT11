@@ -9,7 +9,6 @@ public class LoanController : Controller
 {
     private LoanService _loanService;
     private ItemService _itemService;
-    
     public LoanController(LoanService loanService, ItemService itemService)
     {
         _loanService = loanService;
@@ -26,8 +25,30 @@ public class LoanController : Controller
     [Authorize]
     public async Task<IActionResult> Show()
     {
-        Loan[] loans = await _loanService.GetLoans();
-        return View(loans);
+        var userIdClaim = User.FindFirst("UserId")?.Value;
+
+        if (!int.TryParse(userIdClaim, out int userId))
+            return Forbid();
+
+        var loans = await _loanService.GetLoanByUser(userId);
+        var items = await _itemService.GetItems();
+
+        var viewModel = loans.Select(loan =>
+        {
+            var item = items.FirstOrDefault(i => i.Id == loan.ItemId);
+
+            return new LoanViewModel
+            {
+                Id = loan.Id,
+                UserId = loan.UserId,
+                ItemTitle = item?.Title ?? "Okänd",
+                LoanDate = loan.LoanDate,
+                DueDate = loan.DueDate,
+                ReturnDate = loan.ReturnDate
+            };
+        }).ToArray();
+
+        return View(viewModel);
     }
     
     [Authorize]
@@ -59,15 +80,30 @@ public class LoanController : Controller
     [Authorize]
     public async Task<IActionResult> MyLoans()
     {
-        
         var userIdClaim = User.FindFirst("UserId")?.Value;
 
         if (!int.TryParse(userIdClaim, out int userId))
             return Forbid();
-        
-        Loan[] loans = await _loanService.GetLoanByUser(userId);
-        
-        return View(loans);
+
+        var loans = await _loanService.GetLoanByUser(userId);
+        var items = await _itemService.GetItems();
+
+        var viewModel = loans.Select(loan =>
+        {
+            var item = items.FirstOrDefault(i => i.Id == loan.ItemId);
+
+            return new LoanViewModel
+            {
+                Id = loan.Id,
+                UserId = loan.UserId,
+                ItemTitle = item?.Title ?? "Okänd",
+                LoanDate = loan.LoanDate,
+                DueDate = loan.DueDate,
+                ReturnDate = loan.ReturnDate
+            };
+        }).ToArray();
+
+        return View(viewModel);
     }
     
     [Authorize]
@@ -99,15 +135,68 @@ public class LoanController : Controller
             Status = "Aktiv"
         };
 
+        
+        
         bool success = await _loanService.CreateLoan(loan);
+        var item = await _itemService.GetItem(itemId);
 
         if (success)
-            return RedirectToAction("Show");
+        {
+               
+               item.IsAvailable = false; 
+               await _itemService.UpdateItem(item);
+               
+               return RedirectToAction("MyLoans");
+        }
+                
+         
         
         // Om inte lyckades skicka tillbaka item
-        var item = await _itemService.GetItem(itemId);
         ViewBag.ErrorMessage = "Kunde inte skapa lånet";
         return View(item);
     }
+    
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> ReturnLoan(int id)
+    {
+        var loan = await _loanService.GetLoan(id);
+
+        if (loan == null)
+            return NotFound();
+
+        loan.ReturnDate = DateTime.Now;
+        loan.Status = "Återlämnad";
+
+        bool success = await _loanService.UpdateLoan(loan);
+
+        if (success)
+        {
+            var item = await _itemService.GetItem(loan.ItemId);
+
+            if (item != null)
+            {
+                item.IsAvailable = true;
+                await _itemService.UpdateItem(item);
+            }
+        }
+
+        return RedirectToAction("MyLoans");
+    }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> DeleteLoan(int id)
+    {
+        bool success = await _loanService.DeleteLoan(id);
+
+        if (!success)
+        {
+            TempData["ErrorMessage"] = "Kunde inte ta bort lånet.";
+        }
+
+        return RedirectToAction("Show");
+    }
+    
     
 }
