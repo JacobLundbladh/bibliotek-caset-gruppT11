@@ -31,18 +31,18 @@ public class LoanService
     
     // Hämta beroende på id
     
-    public async Task<Loan[]> GetLoan(int id)
+    public async Task<Loan> GetLoan(int id)
     {
         try // Fel hantering
         {
 
-            var result = await _httpClient.GetFromJsonAsync<Loan[]>($"loan/{id}");
-            return result ??  Array.Empty<Loan>(); // Ifall null skicka till backa tom array
+            var result = await _httpClient.GetFromJsonAsync<Loan>($"loan/{id}");
+            return result;
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error: {ex.Message}");
-            return Array.Empty<Loan>();
+            return null;
         }
     }
     
@@ -117,4 +117,33 @@ public class LoanService
         }
     }
     
+    
+    
+    public async Task<bool> UpdateLoan(Loan loan)
+    {
+        try
+        {
+            var response = await _httpClient.PutAsJsonAsync($"Loan/{loan.Id}", loan);
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+            return false;
+        }
+    }
+    
+    public async Task<bool> DeleteLoan(int id)
+    {
+        try
+        {
+            var response = await _httpClient.DeleteAsync($"Loan/{id}");
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+            return false;
+        }
+    }
 }
