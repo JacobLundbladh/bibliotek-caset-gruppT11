@@ -188,9 +188,30 @@ public class LoanController : Controller
     [Authorize]
     public async Task<IActionResult> DeleteLoan(int id)
     {
+        
+        var loan = await _loanService.GetLoan(id);
+
+        if (loan == null)
+            return NotFound();
+
+        // Ta bort lånet
         bool success = await _loanService.DeleteLoan(id);
 
-        if (!success)
+        if (success)
+        {
+            // Om lånet inte var returnerat, gör item tillgängligt igen
+            if (loan.ReturnDate == null)
+            {
+                var item = await _itemService.GetItem(loan.ItemId);
+
+                if (item != null)
+                {
+                    item.IsAvailable = true;
+                    await _itemService.UpdateItem(item);
+                }
+            }
+        }
+        else
         {
             TempData["ErrorMessage"] = "Kunde inte ta bort lånet.";
         }
