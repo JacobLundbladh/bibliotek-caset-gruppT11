@@ -11,11 +11,22 @@ builder.Services.AddHttpClient<LoanService>((serviceProvider, httpClient) =>
 {
     // Hämta config
     var config = serviceProvider.GetRequiredService<IConfiguration>();
-    
+
     // Hämta adress till LoanService ifrån config
     string adress = config.GetValue<string>("LoanServiceAdress") ?? "";
-    
-   
+
+    httpClient.BaseAddress = new Uri(adress);
+});
+
+// Lägg till HttpClient till ItemService
+builder.Services.AddHttpClient<ItemService>((serviceProvider, httpClient) =>
+{
+    // Hämta config
+    var config = serviceProvider.GetRequiredService<IConfiguration>();
+
+    // Hämta adress till ItemService ifrån config
+    string adress = config.GetValue<string>("ItemServiceAdress") ?? "";
+
     httpClient.BaseAddress = new Uri(adress);
 });
 
@@ -27,12 +38,19 @@ builder.Services.AddHttpClient<AccountService>((serviceProvider, httpClient) =>
 
     // Hämta adress
     string adress = config.GetValue<string>("UserServiceAdress") ?? "";
-    
+
     httpClient.BaseAddress = new Uri(adress);
 });
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme) // Cookis logik
-    .AddCookie(Options => Options.LoginPath = "/Account/Index");
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options => options.LoginPath = "/Account/Index");
+
+builder.Services.AddScoped<ReminderService>();
+
+builder.Services.AddHttpClient("ReminderService", client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["ReminderServiceAddress"]);
+});
 
 var app = builder.Build();
 
@@ -40,11 +58,13 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
+
 app.UseRouting();
 
 app.UseAuthentication();
@@ -53,7 +73,5 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
-app.UseStaticFiles();
 
 app.Run();
