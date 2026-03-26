@@ -1,5 +1,27 @@
-﻿@model Loan
+﻿@model Item
 
 <!-- Skicka med id för item, namn, beskriving och visa på sidan. INnput fält för datum för återlämning av lån och en knapp som är slutför och en för avbryt. -->
 
 
+
+<h2>Slutför lån</h2>
+
+
+@if(ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+}
+
+<p><strong>Namn:</strong> @Model.Title</p>
+<p><strong>Kategori:</strong> @Model.Category</p>
+<p><strong>Beskrivning:</strong> @Model.Description</p>
+
+<form asp-action="Finish" method="post">
+    <input type="hidden" name="itemId" value="@Model.Id" />
+
+    <label for="dueDate">Återlämningsdatum</label>
+    <input type="date" name="dueDate" id="dueDate" required />
+
+    <button type="submit">Slutför</button>
+    <a asp-action="Create">Avbryt</a>
+</form>
