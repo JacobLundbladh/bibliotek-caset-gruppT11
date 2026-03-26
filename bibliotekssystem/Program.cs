@@ -25,7 +25,7 @@ builder.Services.AddHttpClient<ItemService>((serviceProvider, httpClient) =>
     var config = serviceProvider.GetRequiredService<IConfiguration>();
 
     // Hämta adress till ItemService ifrån config
-    string adress = config.GetValue<string>("ItemServiceAdress") ?? "";
+    string adress = config.GetValue<string>("ItemServiceAddress") ?? "";
 
     httpClient.BaseAddress = new Uri(adress);
 });
