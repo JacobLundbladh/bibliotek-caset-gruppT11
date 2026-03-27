@@ -79,6 +79,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-
+// Använda cors-policyn vi skapade
+app.UseCors("ReactAppPolicy");
 
 app.Run();
