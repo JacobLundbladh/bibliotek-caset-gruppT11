@@ -34,6 +34,18 @@ builder.Services.AddDbContext<LoanServiceDbContext>(options =>
  options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 } );
 
+// För att fixa cors, så react kan kommuniera med loan api
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("ReactAppPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    }); 
+});
+
+
 
 var app = builder.Build();
 
