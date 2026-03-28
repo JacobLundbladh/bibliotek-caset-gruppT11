@@ -27,23 +27,20 @@ builder.Services.AddHttpClient<LoanService>((serviceProvider, httpClient) =>
 });
 
 // Lägg till HttpClient till ItemAPI
-builder.Services.AddHttpClient("ItemApi", (serviceProvider, httpClient) =>
+builder.Services.AddHttpClient<ItemService>((serviceProvider, httpClient) =>
 {
-    // Hämta config
     var config = serviceProvider.GetRequiredService<IConfiguration>();
 
-    // Hämta adress till ItemService ifrån config
     string adress = config.GetValue<string>("ItemServiceAddress") ?? "";
+    string apiKey = config["ItemApiKey"] ?? "test123";
 
     httpClient.BaseAddress = new Uri(adress);
 
-    // Hämtar API-nyckeln från config, annars används fallback lokalt
-    string apiKey = config["ItemApiKey"] ?? "test123";
-
-    // Skickar med API-nyckeln i headern
-    httpClient.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+    if (!string.IsNullOrWhiteSpace(apiKey))
+    {
+        httpClient.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+    }
 });
-
 // Lägg till HttpClient till UserService
 builder.Services.AddHttpClient<AccountService>((serviceProvider, httpClient) =>
 {
