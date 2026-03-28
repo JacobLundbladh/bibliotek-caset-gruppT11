@@ -18,13 +18,12 @@ builder.Services.AddHttpClient<LoanService>((serviceProvider, httpClient) =>
     // Api nyckel
     string apiKey = config["Authentication:ApiKey"] ?? ""; 
     
+    httpClient.BaseAddress = new Uri(adress);
+    
     if (!string.IsNullOrWhiteSpace(apiKey))
     {
         httpClient.DefaultRequestHeaders.Add("X-Api-Key", apiKey);
     }
-    
-    
-    httpClient.BaseAddress = new Uri(adress);
 });
 
 // Lägg till HttpClient till ItemService
