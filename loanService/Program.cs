@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Scalar.AspNetCore;
 
+using loanService.Authentication;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers().AddJsonOptions(options =>
@@ -45,8 +47,6 @@ builder.Services.AddCors(options =>
     }); 
 });
 
-
-
 var app = builder.Build();
 
 // Migrera databas
@@ -78,6 +78,9 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+
+app.UseMiddleware<ApiKeyAuthMiddleware>();
 
 // Använda cors-policyn vi skapade
 app.UseCors("ReactAppPolicy");
