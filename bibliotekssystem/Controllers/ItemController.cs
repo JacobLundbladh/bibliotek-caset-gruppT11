@@ -1,24 +1,25 @@
 ﻿using System.Net.Http.Json;
 using bibliotekssystem.Models;
 using Microsoft.AspNetCore.Mvc;
+using bibliotekssystem.Services;
 
 namespace bibliotekssystem.Controllers;
 
 public class ItemController : Controller
 {
-    private readonly HttpClient _http;
+    private ItemService _itemService;
 
-    public ItemController(IHttpClientFactory httpClientFactory)
+    public ItemController(ItemService itemService)
     {
         // Hämtar färdig HttpClient från Program.cs
-        _http = httpClientFactory.CreateClient("ItemApi");
+        _itemService = itemService;
     }
 
     public async Task<IActionResult> Index()
     {
         // Hämtar alla items från ItemAPI
-        var items = await _http.GetFromJsonAsync<List<Item>>("/api/Items");
-        return View(items ?? new List<Item>());
+        var items = await _itemService.GetItems();
+        return View(items?.ToList() ?? new List<Item>());
     }
 
     [HttpGet]
@@ -31,7 +32,7 @@ public class ItemController : Controller
     public async Task<IActionResult> Create(Item item)
     {
         // Skickar nytt item till API
-        await _http.PostAsJsonAsync("/api/Items", item);
+        await _itemService.CreateItem(item);
         return RedirectToAction("Index");
     }
 }
