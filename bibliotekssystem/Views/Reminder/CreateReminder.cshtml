@@ -1,0 +1,84 @@
+@model bibliotekssystem.Models.CreateReminderViewModel
+
+@{
+    ViewData["Title"] = "Skicka påminnelse";
+}
+
+<div style="display: flex; justify-content: center">
+    <h2>@ViewData["Title"]</h2>
+</div>
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger mt-3 text-center">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger mt-3">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <div>@error.ErrorMessage</div>
+        }
+    </div>
+}
+
+<div style="max-width: 700px; margin: 40px auto; padding: 30px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); background-color: white;">
+
+    <form asp-action="CreateReminder" asp-controller="Reminder" method="get" class="mb-4">
+        <div class="mb-3">
+            <label for="selectedUserId" class="form-label">Välj användare</label>
+            <select id="selectedUserId" name="selectedUserId" class="form-select" onchange="this.form.submit()">
+                <option value="">-- Välj användare --</option>
+                @foreach (var user in Model.Users)
+                {
+                    if (user.Id == Model.SelectedUserId)
+                    {
+                        <option value="@user.Id" selected>@user.Username</option>
+                    }
+                    else
+                    {
+                        <option value="@user.Id">@user.Username</option>
+                    }
+                }
+            </select>
+        </div>
+    </form>
+
+    @if (Model.SelectedUserId > 0)
+    {
+        <form asp-action="CreateReminder" asp-controller="Reminder" method="post">
+            <input type="hidden" asp-for="SelectedUserId" />
+
+            <div class="mb-3">
+                <label asp-for="SelectedLoanId" class="form-label">Välj lån</label>
+                <select asp-for="SelectedLoanId" class="form-select">
+                    <option value="">-- Välj lån --</option>
+                    @foreach (var loan in Model.Loans)
+                    {
+                        <option value="@loan.Id">
+                            Lån #@loan.Id - ItemId: @loan.ItemId - Due: @loan.DueDate.ToShortDateString()
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Message" class="form-label">Meddelande</label>
+                <textarea asp-for="Message" class="form-control" rows="4" placeholder="Skriv påminnelsen här..."></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ReminderDate" class="form-label">Påminnelsedatum</label>
+                <input asp-for="ReminderDate" type="datetime-local" class="form-control" />
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <button type="submit" class="btn btn-success">Skicka påminnelse</button>
+                <a asp-controller="Reminder" asp-action="Index" class="btn btn-secondary">Tillbaka</a>
+            </div>
+        </form>
+    }
+</div>
