@@ -1,4 +1,4 @@
-﻿namespace loanService.Authentication;
+﻿namespace userService.Authentication;
 
 public class ApiKeyAuthMiddleware
 {
@@ -19,7 +19,7 @@ public class ApiKeyAuthMiddleware
             await context.Response.WriteAsync("Apinyckel saknas");
             return;
         }
-        var apiKey = _configuration["Authentication:LoanApiKey"];
+        var apiKey = _configuration["Authentication:UserApiKey"];
         if (!apiKey.Equals(extractedApiKey))
         {
             context.Response.StatusCode = 401;
