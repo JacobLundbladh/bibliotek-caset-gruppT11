@@ -13,6 +13,13 @@
     <a asp-controller="Reminder" asp-action="Index" class="btn btn-primary">Se sen inlämning</a>
     <a asp-controller="Reminder" asp-action="Index" class="btn btn-primary">Uppdatera påminnelse</a>
     <a asp-controller="Reminder" asp-action="Index" class="btn btn-danger">Ta bort påminnelse</a>
+
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-controller="Reminder" asp-action="CreateReminder" class="btn btn-warning">
+            Skicka påminnelse till användare
+        </a>
+    }
 </div>
 
 @if (Model != null && Model.Count > 0)
