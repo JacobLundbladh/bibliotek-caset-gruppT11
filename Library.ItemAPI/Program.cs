@@ -8,20 +8,25 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Lägger till CORS så att React-appen lokalt får anropa API:t
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 // Databas (SQLite)
 builder.Services.AddDbContext<LibraryDbContext>(options =>
     options.UseSqlite("Data Source=library.db"));
 
 var app = builder.Build();
 
-// Hämtar API-nyckeln från konfiguration (Azure Environment Variable)
-var apiKey = builder.Configuration["ApiKey"];
-
-// Säkerställer att nyckeln finns (annars startar inte appen)
-if (string.IsNullOrWhiteSpace(apiKey))
-{
-    throw new Exception("ApiKey is missing.");
-}
+// Hämtar API-nyckeln från konfiguration, annars används fallback lokalt
+var apiKey = builder.Configuration["ApiKey"] ?? "test123";
 
 app.UseSwagger();
 app.UseSwaggerUI();
@@ -30,6 +35,9 @@ app.UseSwaggerUI();
 app.MapGet("/", () => "ItemAPI is running");
 
 app.UseHttpsRedirection();
+
+// Tillåter React-appen att prata med API:t lokalt
+app.UseCors("AllowReactApp");
 
 // Middleware som skyddar alla /api endpoints
 app.Use(async (context, next) =>
