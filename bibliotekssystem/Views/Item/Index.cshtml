@@ -6,7 +6,7 @@
 
 <h1>Objekt</h1>
 
-@if (User.Identity?.Name == "admin")
+@if (User.IsInRole("Admin"))
 {
     <p><a asp-action="Create" class="btn btn-primary">Lägg till objekt</a></p>
 }
