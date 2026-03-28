@@ -77,12 +77,14 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.MapControllers();
 
 
 app.UseMiddleware<ApiKeyAuthMiddleware>();
 
 // Använda cors-policyn vi skapade
 app.UseCors("ReactAppPolicy");
+
+
+app.MapControllers();
 
 app.Run();

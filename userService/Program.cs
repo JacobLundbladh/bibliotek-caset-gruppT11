@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using userService.Data;
 using Microsoft.OpenApi.Models;
+using userService.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,6 +64,10 @@ app.UseSwaggerUI();
 
 
 app.UseAuthorization();
+
+
+app.UseMiddleware<ApiKeyAuthMiddleware>();
+
 
 app.MapControllers();
 
