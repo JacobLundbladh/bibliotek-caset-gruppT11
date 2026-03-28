@@ -119,4 +119,17 @@ public class ReminderController : Controller
         TempData["SuccessMessage"] = "Påminnelsen skickades.";
         return RedirectToAction("Index");
     }
+    
+    [HttpPost]
+    public async Task<IActionResult> DeleteReminder(int id)
+    {
+        var success = await _reminderService.DeleteReminderAsync(id);
+
+        if (!success)
+        {
+            TempData["ErrorMessage"] = "Det gick inte att ta bort påminnelsen.";
+        }
+
+        return RedirectToAction("Index");
+    }
 }

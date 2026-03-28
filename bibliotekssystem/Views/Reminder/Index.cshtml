@@ -8,40 +8,51 @@
     <h2>@ViewData["Title"]</h2>
 </div>
 
-<div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 50px;">
-    <a asp-controller="Reminder" asp-action="Index" class="btn btn-primary">Visa påminnelser</a>
-    <a asp-controller="Reminder" asp-action="Index" class="btn btn-primary">Se sen inlämning</a>
-    <a asp-controller="Reminder" asp-action="Index" class="btn btn-primary">Uppdatera påminnelse</a>
-    <a asp-controller="Reminder" asp-action="Index" class="btn btn-danger">Ta bort påminnelse</a>
-
-    @if (User.IsInRole("Admin"))
-    {
+@if (User.IsInRole("Admin"))
+{
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 50px;">
         <a asp-controller="Reminder" asp-action="CreateReminder" class="btn btn-warning">
             Skicka påminnelse till användare
         </a>
-    }
-</div>
-
-@if (Model != null && Model.Count > 0)
-{
-    <div style="max-width: 900px; margin: 40px auto;">
-        <h4>Hämtade påminnelser från Reminder API</h4>
-        <ul class="list-group">
-            @foreach (var reminder in Model)
-            {
-                <li class="list-group-item">
-                    <strong>Meddelande:</strong> @reminder.Message <br>
-                    <strong>LoanId:</strong> @reminder.LoanId <br>
-                    <strong>Datum:</strong> @reminder.ReminderDate <br>
-                    <strong>Skickad:</strong> @reminder.IsSent
-                </li>
-            }
-        </ul>
     </div>
 }
 else
 {
-    <div style="max-width: 900px; margin: 40px auto;">
-        <p>Inga påminnelser hittades.</p>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 50px;">
+        <a asp-controller="Reminder" asp-action="Index" class="btn btn-primary">Visa gamla påminnelser</a>
+        <a asp-controller="Reminder" asp-action="Index" class="btn btn-danger">Ta bort påminnelse</a>
     </div>
+
+    @if (Model != null && Model.Count > 0)
+    {
+        <div style="max-width: 900px; margin: 40px auto;">
+            <h4>Dina påminnelser</h4>
+
+            <ul class="list-group">
+                @foreach (var reminder in Model)
+                {
+                    <li class="list-group-item">
+
+                        <strong>Meddelande:</strong> @reminder.Message <br>
+                        <strong>LoanId:</strong> @reminder.LoanId <br>
+                        <strong>Datum:</strong> @reminder.ReminderDate <br>
+                        <strong>Skickad:</strong> @reminder.IsSent <br><br>
+
+                        <form asp-controller="Reminder"
+                              asp-action="DeleteReminder"
+                              method="post"
+                              style="display:inline">
+
+                            <input type="hidden" name="id" value="@reminder.Id" />
+
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                Ta bort
+                            </button>
+                        </form>
+
+                    </li>
+                }
+            </ul>
+        </div>
+    }
 }
