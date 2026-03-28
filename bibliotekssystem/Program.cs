@@ -16,7 +16,7 @@ builder.Services.AddHttpClient<LoanService>((serviceProvider, httpClient) =>
     string adress = config.GetValue<string>("LoanServiceAdress") ?? "";
     
     // Api nyckel
-    string apiKey = config["Authentication:ApiKey"] ?? ""; 
+    string apiKey = config["Authentication:LoanApiKey"] ?? ""; 
     
     httpClient.BaseAddress = new Uri(adress);
     
@@ -41,13 +41,17 @@ builder.Services.AddHttpClient<ItemService>((serviceProvider, httpClient) =>
 // Lägg till HttpClient till UserService
 builder.Services.AddHttpClient<AccountService>((serviceProvider, httpClient) =>
 {
-    // Hämta config
     var config = serviceProvider.GetRequiredService<IConfiguration>();
 
-    // Hämta adress
     string adress = config.GetValue<string>("UserServiceAdress") ?? "";
+    string apiKey = config["Authentication:UserApiKey"] ?? "";
 
     httpClient.BaseAddress = new Uri(adress);
+
+    if (!string.IsNullOrWhiteSpace(apiKey))
+    {
+        httpClient.DefaultRequestHeaders.Add("X-Api-Key", apiKey);
+    }
 });
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
