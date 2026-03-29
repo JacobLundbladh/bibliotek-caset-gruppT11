@@ -75,6 +75,12 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
+
+// Använda cors-policyn vi skapade
+app.UseCors("ReactAppPolicy");
+
+
+
 app.UseAuthorization();
 
 
