@@ -30,7 +30,7 @@ public class LoanController : Controller
         if (!int.TryParse(userIdClaim, out int userId))
             return Forbid();
 
-        var loans = await _loanService.GetLoanByUser(userId);
+        var loans = await _loanService.GetLoans();
         var items = await _itemService.GetItems();
 
         var viewModel = loans.Select(loan =>
