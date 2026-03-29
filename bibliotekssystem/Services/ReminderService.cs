@@ -31,5 +31,19 @@ namespace bibliotekssystem.Services
                 return false;
             }
         }
+        
+        public async Task<bool> DeleteReminderAsync(int id)
+        {
+            try
+            {
+                var response = await _httpClient.DeleteAsync($"Reminders/{id}");
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting reminder: {ex.Message}");
+                return false;
+            }
+        }
     }
 }
