@@ -66,12 +66,10 @@ public class LoanService
  
     public async Task<bool> CreateLoan(Loan loan)
     {
-        // Hårdkoda fält som vi inte fyller i formuläret
-        //loan.UserId = 42; // exempel på test-användare
-        //loan.LoanDate = DateTime.Now;
-        //loan.DueDate = DateTime.Now.AddDays(14); // 2 veckors lån
+        // Hårdkoda fält som inte fyller i formuläret
+        
         loan.ReturnDate = null;
-        //loan.Status = "Active";
+        
 
         try // Fel hantering
         {
@@ -87,21 +85,6 @@ public class LoanService
         }
     }
 
-    public async Task<Item[]> GetItems()
-    {
-        
-        try // Fel hantering
-        {
-
-            var result = await _httpClient.GetFromJsonAsync<Item[]>("items"); // Stor/liten
-            return result ??  Array.Empty<Item>(); // Ifall null skicka till backa tom array
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error: {ex.Message}");
-            return Array.Empty<Item>();
-        }
-    }
     
     public async Task<Item?> GetItem(int id)
     {
